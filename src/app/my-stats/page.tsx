@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+
 "use client"
 
 import React, { useState } from "react";
@@ -9,10 +12,12 @@ import { Label } from "@/components/ui/label";
 const StatCardGenerator = () => {
   const [teamName, setTeamName] = useState("");
   const [playerNumber, setPlayerNumber] = useState("");
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState<any>(null);
 
-  const fetchPlayerStats = (team, number) => {
+  const fetchPlayerStats = (teamName: string, playerNumber: string) => {
     return {
+      teamName,
+      playerNumber,
       name: "Jane Smith",
       battingAvg: ".345",
       runs: 12,
