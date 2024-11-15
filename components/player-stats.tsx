@@ -1,10 +1,10 @@
-import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Download, ArrowLeft, Target, Percent, Trophy, Star } from "lucide-react";
 import { toPng } from 'html-to-image';
 import { useToast } from "@/hooks/use-toast";
 import { StatCard } from "./stat-card";
+import { useRef } from "react";
 
 interface PlayerStatsProps {
   teamName: string;
@@ -48,8 +48,8 @@ export default function PlayerStats({
             letterSpacing: computedStyle.letterSpacing,
             lineHeight: computedStyle.lineHeight,
             textRendering: 'optimizeLegibility',
-            WebkitFontSmoothing: 'antialiased',
-            MozOsxFontSmoothing: 'grayscale'
+            ['WebkitFontSmoothing' as any]: 'antialiased',
+            ['MozOsxFontSmoothing' as any]: 'grayscale'
           },
           filter: (node) => {
             return !node.classList?.contains('exclude-from-screenshot');
