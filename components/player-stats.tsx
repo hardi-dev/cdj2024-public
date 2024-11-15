@@ -32,12 +32,27 @@ export default function PlayerStats({
   const downloadStats = async () => {
     if (statsRef.current) {
       try {
+        await document.fonts.ready;
+        
+        const computedStyle = window.getComputedStyle(statsRef.current);
+        
         const dataUrl = await toPng(statsRef.current, {
           cacheBust: true,
           pixelRatio: 3,
           style: {
             transform: 'none',
-            marginLeft: '0'
+            marginLeft: '0',
+            fontFamily: computedStyle.fontFamily,
+            fontWeight: computedStyle.fontWeight,
+            fontSize: computedStyle.fontSize,
+            letterSpacing: computedStyle.letterSpacing,
+            lineHeight: computedStyle.lineHeight,
+            textRendering: 'optimizeLegibility',
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale'
+          },
+          filter: (node) => {
+            return !node.classList?.contains('exclude-from-screenshot');
           }
         });
         
@@ -51,6 +66,7 @@ export default function PlayerStats({
           description: "Statistics image has been downloaded",
         });
       } catch (error) {
+        console.error('Error generating image:', error);
         toast({
           title: "Error",
           description: "Failed to download statistics",
@@ -65,7 +81,7 @@ export default function PlayerStats({
       <Button variant="ghost" className="mb-4" onClick={onBack}>
         <ArrowLeft className="mr-2 h-4 w-4" /> Back
       </Button>
-      <div className="w-[1080] aspect-[9/16] bg-red-500">
+      <div className="w-[320px] aspect-[9/16] bg-red-500 mx-auto">
         <div ref={statsRef} className="stats-card w-full h-full">
           <div className="w-full h-full bg-gradient-to-br from-blue-600 to-purple-700 p-5">
             <Card className="w-full h-full bg-white/95 backdrop-blur-sm p-5 flex flex-col items-center justify-between">
@@ -74,7 +90,7 @@ export default function PlayerStats({
                   <Star className="h-8 w-8 text-white" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900">{teamName}</h1>
-                <p className="text-lg text-gray-600">#{jerseyNumber}</p>
+                <p className="text-lg font-normal text-gray-600">#{jerseyNumber}</p>
               </div>
               <div className="grid grid-cols-2 gap-3 w-full">
                 <StatCard
